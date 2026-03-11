@@ -1,6 +1,6 @@
 {
 	"id": "obsidian-text-tools",
-	"name": "Text Tools",
+	"name": "Obsidian Text Tools",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
 	"description": "A collection of tools to operate on text in your notes.",
