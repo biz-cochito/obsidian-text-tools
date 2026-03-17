@@ -4,7 +4,7 @@ export function registerRemoveRedundantH1(plugin: Plugin) {
     // Single file command (Active Editor)
     plugin.addCommand({
         id: 'remove-redundant-h1',
-        name: 'Remove redundant H1 in active file',
+        name: 'Remove redundant h1 in active file',
         editorCallback: (editor: Editor, view: MarkdownView) => {
             const file = view.file;
             if (!file) return;
@@ -69,7 +69,7 @@ export function registerRemoveRedundantH1(plugin: Plugin) {
     // Vault-wide command
     plugin.addCommand({
         id: 'remove-redundant-h1-vault',
-        name: 'Remove redundant H1 in entire vault',
+        name: 'Remove redundant h1 in entire vault',
         callback: async () => {
             const files = plugin.app.vault.getMarkdownFiles();
             let modifiedCount = 0;
