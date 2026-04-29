@@ -3,7 +3,9 @@ import { Editor, Notice, Plugin, TFile } from "obsidian";
 type CaseMode =
 	| "camel"
 	| "snake"
+	| "screamingSnake"
 	| "kebab"
+	| "screamingKebab"
 	| "title"
 	| "upper"
 	| "lower"
@@ -27,9 +29,19 @@ const SELECTION_CASE_COMMANDS: CaseCommandDefinition[] = [
 		mode: "snake",
 	},
 	{
+		id: "convert-selection-to-screaming-snake-case",
+		name: "Convert selection to SCREAMING_SNAKE_CASE",
+		mode: "screamingSnake",
+	},
+	{
 		id: "convert-selection-to-kebab-case",
 		name: "Convert selection to kebab-case",
 		mode: "kebab",
+	},
+	{
+		id: "convert-selection-to-screaming-kebab-case",
+		name: "Convert selection to SCREAMING-KEBAB-CASE",
+		mode: "screamingKebab",
 	},
 	{
 		id: "convert-selection-to-title-case",
@@ -65,9 +77,19 @@ const FILE_NAME_CASE_COMMANDS: CaseCommandDefinition[] = [
 		mode: "snake",
 	},
 	{
+		id: "convert-active-note-name-to-screaming-snake-case",
+		name: "Convert active note name to SCREAMING_SNAKE_CASE",
+		mode: "screamingSnake",
+	},
+	{
 		id: "convert-active-note-name-to-kebab-case",
 		name: "Convert active note name to kebab-case",
 		mode: "kebab",
+	},
+	{
+		id: "convert-active-note-name-to-screaming-kebab-case",
+		name: "Convert active note name to SCREAMING-KEBAB-CASE",
+		mode: "screamingKebab",
 	},
 	{
 		id: "convert-active-note-name-to-title-case",
@@ -126,13 +148,17 @@ export function registerConvertCaseCommands(plugin: Plugin) {
 }
 
 function convertTextCase(text: string, mode: CaseMode): string {
-	switch (mode) {
+		switch (mode) {
 		case "camel":
 			return toCamelCase(text);
 		case "snake":
-			return toWordSeparatorCase(text, "_");
+			return toWordSeparatorCase(text, "_", "lower");
+		case "screamingSnake":
+			return toWordSeparatorCase(text, "_", "upper");
 		case "kebab":
-			return toWordSeparatorCase(text, "-");
+			return toWordSeparatorCase(text, "-", "lower");
+		case "screamingKebab":
+			return toWordSeparatorCase(text, "-", "upper");
 		case "title":
 			return toTitleCase(text);
 		case "upper":
@@ -163,9 +189,15 @@ function toCamelCase(text: string): string {
 	return firstWord + remainingWords.map(capitalize).join("");
 }
 
-function toWordSeparatorCase(text: string, separator: "_" | "-"): string {
+function toWordSeparatorCase(
+	text: string,
+	separator: "_" | "-",
+	letterCase: "lower" | "upper",
+): string {
 	return splitWords(text)
-		.map((word) => word.toLowerCase())
+		.map((word) =>
+			letterCase === "upper" ? word.toUpperCase() : word.toLowerCase(),
+		)
 		.join(separator);
 }
 
